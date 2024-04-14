@@ -1,0 +1,16 @@
+<?php
+$productCollection = $block->getProductCollection();
+?>
+
+<div class="latest-products">
+    <h2>Najnowsze produkty</h2>
+    <ul>
+        <?php foreach ($productCollection as $product): ?>
+            <li>
+                <a href="<?php echo $product->getProductUrl(); ?>">
+                    <?php echo $product->getName(); ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>

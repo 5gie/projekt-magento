@@ -3,13 +3,30 @@ $productCollection = $block->getProductCollection();
 ?>
 
 <div class="latest-products">
-    <h2>Najnowsze produkty</h2>
-    <ul>
+    <h2 class="latest-products__title"><?php echo __('Najnowsze produkty') ?></h2>
+    <ul class="latest-products__list">
         <?php foreach ($productCollection as $product): ?>
-            <li>
-                <a href="<?php echo $product->getProductUrl(); ?>">
-                    <?php echo $product->getName(); ?>
+            <li class="latest-products__item product-miniature">
+                <?php echo $block->getProductDetailsHtml($product) ?>
+                <a class="product-miniature__link" href="<?php echo $product->getProductUrl() ?>">
+                    <img 
+                        class="product-miniature__image"
+                        src="<?php echo $block->getImage($product, 'latest_product_thumbnail')->getImageUrl() ?>"
+                        alt="<?php echo $block->escapeHtml($product->getName()) ?>" 
+                    />
+
                 </a>
+                <div class="product-miniature__info">
+                    <h2 class="product-miniature__name">
+                        <a href="<?php echo $product->getProductUrl() ?>">
+                            <?php echo $block->escapeHtml($product->getName()) ?>
+                        </a>
+                    </h2>
+                    <span class="product-miniature__price"><?php echo $block->getProductPriceHtml($product) ?></span>
+                    <a class="product-miniature__button" href="<?php echo $product->getProductUrl() ?>">
+                        <?php echo __('Sprawdź') ?>
+                    </a>
+                </div>
             </li>
         <?php endforeach; ?>
     </ul>

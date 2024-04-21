@@ -2,27 +2,49 @@
 
 namespace Custom\LatestProducts\Block;
 
-use Magento\Framework\View\Element\Template;
-use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Zend_Db_Expr;
 
-class LatestProducts extends Template
+
+class LatestProducts extends AbstractLatestProducts
 {
-    protected $productCollectionFactory;
-
-    public function __construct(
-        Template\Context $context,
-        CollectionFactory $productCollectionFactory,
-        array $data = []
-    ) {
-        $this->productCollectionFactory = $productCollectionFactory;
-        parent::__construct($context, $data);
-    }
-
     public function getProductCollection()
     {
-        return $this->productCollectionFactory->create()
-            ->addAttributeToSelect('*')
-            ->setPageSize(5)
-            ->setOrder('created_at', 'desc');
+        $visibleProducts = $this->_catalogProductVisibility->getVisibleInCatalogIds();
+        $collection = $this->_productCollectionFactory->create()->setVisibility($visibleProducts);
+        $collection->addAttributeToSelect('*');
+
+        // $collection->load();
+        // $products = $collection->getItems();
+
+        $collection      = $this->_addProductAttributesAndPrices($collection)
+        //     ->addAttributeToFilter(
+        //         'news_from_date',
+        //         ['date' => true, 'to' => $this->getEndOfDayDate()],
+        //         'left'
+        //     )
+        //     ->addAttributeToFilter(
+        //         'news_to_date',
+        //         [
+        //             'or' => [
+        //                 0 => ['date' => true, 'from' => $this->getStartOfDayDate()],
+        //                 1 => ['is' => new Zend_Db_Expr('null')],
+        //             ]
+        //         ],
+        //         'left'
+        //     )
+            // ->addAttributeToSort(
+            //     'news_from_date',
+            //     'desc'
+            // )
+            ->addAttributeToSort(
+                'created_at',
+                'desc'
+            )
+            ->addStoreFilter($this->getStoreId())
+            ->setPageSize($this->getProductsCount());
+        //     ->setPageSize(8);
+
+        return $collection;
     }
+
 }

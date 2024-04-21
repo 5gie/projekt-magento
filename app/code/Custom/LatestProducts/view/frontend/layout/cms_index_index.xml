@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Custom_LatestProducts::css/source/custom-styles.less"/>
+        <css src="Custom_LatestProducts::css/custom-styles.css"/>
+    </head>
     <body>
         <referenceContainer name="content">
             <block class="Custom\LatestProducts\Block\LatestProducts" name="latest_products_block" template="Custom_LatestProducts::latest_products.phtml"/>
